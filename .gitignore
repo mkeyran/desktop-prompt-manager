@@ -1,0 +1,40 @@
+# Build directories
+build/
+*.build/
+
+# Qt build artifacts
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+
+# Qt Creator
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Database files (runtime)
+*.db
+*.sqlite
+*.sqlite3
