@@ -71,12 +71,16 @@ Page {
 
                 Repeater {
                     model: placeholderViewModel.placeholders
-                    RowLayout {
+                    
+                    delegate: RowLayout {
                         Layout.fillWidth: true
-                        spacing: 5
+                        Layout.preferredWidth: parent.width
+                        spacing: 10
 
                         Label {
                             text: modelData
+                            Layout.preferredWidth: 120
+                            Layout.minimumWidth: 80
                         }
 
                         TextField {
