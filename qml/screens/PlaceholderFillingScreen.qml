@@ -9,26 +9,27 @@ Page {
     property int promptId: -1
     property string content: ""
 
-    signal finished()
-    signal back()
+    signal finished
+    signal back
 
     Component.onCompleted: {
-        console.log("PlaceholderFillingScreen - promptId:", promptId, "content:", content)
+        console.log("PlaceholderFillingScreen - promptId:", promptId, "content:", content);
         if (content.length > 0) {
             // Use provided content (preferred method)
-            console.log("Initializing with content:", content)
-            placeholderViewModel.initialize(content)
+            console.log("Initializing with content:", content);
+            placeholderViewModel.initialize(content);
         } else if (promptId > 0) {
             // Fallback: Load prompt content from ID through the ViewModel
-            let prompt = promptListViewModel.getPromptById(promptId)
+            let prompt = promptListViewModel.getPromptById(promptId);
             if (prompt) {
-                console.log("Initializing with prompt content:", prompt.content)
-                placeholderViewModel.initialize(prompt.content)
+                console.log("Initializing with prompt content:", prompt.content);
+                placeholderViewModel.initialize(prompt.content);
             }
         }
     }
 
     header: ToolBar {
+        height: 50
         RowLayout {
             anchors.fill: parent
             anchors.margins: 10
@@ -78,15 +79,15 @@ Page {
                 onAccepted: {
                     if (!placeholderViewModel.goNext()) {
                         // Last placeholder, save and show results
-                        placeholderViewModel.saveCurrentValue()
+                        placeholderViewModel.saveCurrentValue();
                     }
                 }
 
-                Keys.onPressed: function(event) {
+                Keys.onPressed: function (event) {
                     if (event.key === Qt.Key_Tab && !event.modifiers) {
-                        event.accepted = true
+                        event.accepted = true;
                         if (!placeholderViewModel.goNext()) {
-                            placeholderViewModel.saveCurrentValue()
+                            placeholderViewModel.saveCurrentValue();
                         }
                     }
                 }
@@ -110,9 +111,9 @@ Page {
                     text: placeholderViewModel.canGoNext ? "Next →" : "Finish"
                     onClicked: {
                         if (placeholderViewModel.canGoNext) {
-                            placeholderViewModel.goNext()
+                            placeholderViewModel.goNext();
                         } else {
-                            placeholderViewModel.saveCurrentValue()
+                            placeholderViewModel.saveCurrentValue();
                         }
                     }
                 }
@@ -140,8 +141,8 @@ Page {
                     text: "Copy to Clipboard"
                     visible: placeholderViewModel.isComplete
                     onClicked: {
-                        clipboardUtils.copyToClipboard(placeholderViewModel.processedContent)
-                        console.log("Copied to clipboard:", placeholderViewModel.processedContent.length, "characters")
+                        clipboardUtils.copyToClipboard(placeholderViewModel.processedContent);
+                        console.log("Copied to clipboard:", placeholderViewModel.processedContent.length, "characters");
                     }
                 }
 
@@ -183,9 +184,7 @@ Page {
 
             Label {
                 anchors.centerIn: parent
-                text: placeholderViewModel.isComplete ? 
-                      "✓ All placeholders filled!" : 
-                      `${Object.keys(placeholderViewModel.getAllValues()).length} / ${placeholderViewModel.placeholders.length} placeholders filled`
+                text: placeholderViewModel.isComplete ? "✓ All placeholders filled!" : `${Object.keys(placeholderViewModel.getAllValues()).length} / ${placeholderViewModel.placeholders.length} placeholders filled`
                 color: "white"
                 font.bold: true
             }

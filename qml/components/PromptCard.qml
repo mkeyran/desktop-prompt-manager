@@ -16,10 +16,10 @@ Rectangle {
         id: placeholderUtils
     }
 
-    signal editClicked()
-    signal deleteClicked()
-    signal duplicateClicked()
-    signal fillPlaceholdersClicked()
+    signal editClicked
+    signal deleteClicked
+    signal duplicateClicked
+    signal fillPlaceholdersClicked
     signal fillPlaceholdersWithContentClicked(string content)
 
     height: 120
@@ -35,7 +35,7 @@ Rectangle {
         acceptedButtons: Qt.LeftButton
         onClicked: {
             // Always go to placeholder filling when clicking a prompt
-            root.fillPlaceholdersWithContentClicked(root.content)
+            root.fillPlaceholdersWithContentClicked(root.content);
         }
     }
 
@@ -107,19 +107,18 @@ Rectangle {
             Button {
                 text: "Edit"
                 onClicked: {
-                    root.editClicked()
+                    root.editClicked();
                 }
             }
 
             Button {
                 text: "⋯"
                 onClicked: contextMenu.open()
-                
+
                 Menu {
                     id: contextMenu
                     MenuItem {
                         text: "Fill Placeholders"
-                        visible: placeholderUtils.hasPlaceholders(root.content)
                         onTriggered: root.fillPlaceholdersWithContentClicked(root.content)
                     }
                     MenuItem {

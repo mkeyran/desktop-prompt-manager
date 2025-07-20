@@ -15,6 +15,7 @@ void PromptEditViewModel::setTitle(const QString &title)
     if (m_title != title) {
         m_title = title;
         emit titleChanged();
+        emit canSaveChanged();
     }
 }
 
@@ -24,6 +25,7 @@ void PromptEditViewModel::setContent(const QString &content)
         m_content = content;
         emit contentChanged();
         emit hasPlaceholdersChanged();
+        emit canSaveChanged();
     }
 }
 

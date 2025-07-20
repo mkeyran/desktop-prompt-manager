@@ -7,11 +7,12 @@ Page {
     id: root
 
     signal editPrompt(int promptId)
-    signal createNewPrompt()
+    signal createNewPrompt
     signal fillPlaceholders(int promptId)
     signal fillPlaceholdersWithContent(int promptId, string content)
 
     header: ToolBar {
+        height: 50
         RowLayout {
             anchors.fill: parent
             anchors.margins: 10
@@ -104,8 +105,8 @@ Page {
                     onDeleteClicked: promptListViewModel.deletePrompt(promptId)
                     onDuplicateClicked: promptListViewModel.duplicatePrompt(promptId)
                     onFillPlaceholdersClicked: root.fillPlaceholdersWithContent(promptId, model.content)
-                    onFillPlaceholdersWithContentClicked: function(content) {
-                        root.fillPlaceholdersWithContent(promptId, content)
+                    onFillPlaceholdersWithContentClicked: function (content) {
+                        root.fillPlaceholdersWithContent(promptId, content);
                     }
                 }
 
@@ -116,9 +117,7 @@ Page {
 
                     Label {
                         anchors.centerIn: parent
-                        text: promptListViewModel.searchText.length > 0 ? 
-                              "No prompts found for your search" : 
-                              "No prompts yet. Create your first prompt!"
+                        text: promptListViewModel.searchText.length > 0 ? "No prompts found for your search" : "No prompts yet. Create your first prompt!"
                         color: "#666"
                         font.pointSize: 16
                     }

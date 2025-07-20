@@ -18,6 +18,7 @@ class PromptEditViewModel : public QObject
     Q_PROPERTY(bool hasPlaceholders READ hasPlaceholders NOTIFY hasPlaceholdersChanged)
     Q_PROPERTY(bool isLoading READ isLoading NOTIFY isLoadingChanged)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
+    Q_PROPERTY(bool canSave READ canSave NOTIFY canSaveChanged)
 
 public:
     explicit PromptEditViewModel(PromptRepository *repository, QObject *parent = nullptr);
@@ -58,6 +59,7 @@ signals:
     void hasPlaceholdersChanged();
     void isLoadingChanged();
     void errorMessageChanged();
+    void canSaveChanged();
     void promptSaved(int promptId);
     void folderCreated();
 
