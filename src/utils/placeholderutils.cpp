@@ -20,18 +20,20 @@ QStringList PlaceholderUtils::extractPlaceholders(const QString &text)
         return QStringList();
     }
     
-    QSet<QString> uniquePlaceholders;
+    QStringList orderedPlaceholders;
+    QSet<QString> seenPlaceholders;
     QRegularExpressionMatchIterator iterator = placeholderRegex().globalMatch(text);
     
     while (iterator.hasNext()) {
         QRegularExpressionMatch match = iterator.next();
         QString placeholder = trimPlaceholderName(match.captured(1));
-        if (!placeholder.isEmpty()) {
-            uniquePlaceholders.insert(placeholder);
+        if (!placeholder.isEmpty() && !seenPlaceholders.contains(placeholder)) {
+            orderedPlaceholders.append(placeholder);
+            seenPlaceholders.insert(placeholder);
         }
     }
     
-    return uniquePlaceholders.values();
+    return orderedPlaceholders;
 }
 
 QString PlaceholderUtils::replacePlaceholders(const QString &text, const QMap<QString, QString> &values)
@@ -88,10 +90,10 @@ QString PlaceholderUtils::generatePreview(const QString &text, const QMap<QStrin
         QString placeholderName = trimPlaceholderName(match.captured(1));
         QString replacement;
         
-        if (values.contains(placeholderName)) {
+        if (values.contains(placeholderName) && !values[placeholderName].isEmpty()) {
             replacement = values[placeholderName];
         } else {
-            replacement = QString("[%1]").arg(placeholderName); // Show unfilled placeholders
+            replacement = QString("{{%1}}").arg(placeholderName); // Show unfilled placeholders with original syntax
         }
         
         result.replace(match.capturedStart(), match.capturedLength(), replacement);

@@ -170,14 +170,8 @@ void PlaceholderViewModel::updateCurrentValue()
 
 void PlaceholderViewModel::updateProcessedContent()
 {
-    // Create a temporary map including current value
-    QMap<QString, QString> tempValues = m_values;
-    if (m_currentIndex >= 0 && m_currentIndex < m_placeholders.size()) {
-        QString currentPlaceholder = m_placeholders.at(m_currentIndex);
-        tempValues[currentPlaceholder] = m_currentValue;
-    }
-    
-    QString newProcessedContent = PlaceholderUtils::generatePreview(m_originalContent, tempValues);
+    // Use the stored values for generating preview
+    QString newProcessedContent = PlaceholderUtils::generatePreview(m_originalContent, m_values);
     if (m_processedContent != newProcessedContent) {
         m_processedContent = newProcessedContent;
         emit processedContentChanged();

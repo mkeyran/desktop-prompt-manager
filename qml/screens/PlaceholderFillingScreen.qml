@@ -47,7 +47,7 @@ Page {
             }
 
             Label {
-                text: `${placeholderViewModel.currentIndex + 1} / ${placeholderViewModel.placeholders.length}`
+                text: `${placeholderViewModel.placeholders.length} placeholders`
                 visible: placeholderViewModel.placeholders.length > 0
             }
         }
@@ -58,62 +58,39 @@ Page {
         anchors.margins: 20
         spacing: 20
 
-        // Current placeholder input
-        ColumnLayout {
+        // All placeholder inputs
+        ScrollView {
             Layout.fillWidth: true
-            spacing: 10
+            Layout.preferredHeight: Math.min(400, placeholderViewModel.placeholders.length * 40)
             visible: placeholderViewModel.placeholders.length > 0
+            clip: true
 
-            Label {
-                text: `Enter value for: ${placeholderViewModel.currentPlaceholder}`
-                font.bold: true
-                font.pointSize: 14
-            }
+            ColumnLayout {
+                width: parent.width
+                spacing: 15
 
-            TextField {
-                id: placeholderInput
-                Layout.fillWidth: true
-                placeholderText: `Value for ${placeholderViewModel.currentPlaceholder}...`
-                text: placeholderViewModel.currentValue
-                onTextChanged: placeholderViewModel.currentValue = text
-                onAccepted: {
-                    if (!placeholderViewModel.goNext()) {
-                        // Last placeholder, save and show results
-                        placeholderViewModel.saveCurrentValue();
-                    }
-                }
+                Repeater {
+                    model: placeholderViewModel.placeholders
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 5
 
-                Keys.onPressed: function (event) {
-                    if (event.key === Qt.Key_Tab && !event.modifiers) {
-                        event.accepted = true;
-                        if (!placeholderViewModel.goNext()) {
-                            placeholderViewModel.saveCurrentValue();
+                        Label {
+                            text: modelData
                         }
-                    }
-                }
-            }
 
-            // Navigation buttons
-            RowLayout {
-                Layout.fillWidth: true
-
-                Button {
-                    text: "← Previous"
-                    enabled: placeholderViewModel.canGoPrevious
-                    onClicked: placeholderViewModel.goPrevious()
-                }
-
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                Button {
-                    text: placeholderViewModel.canGoNext ? "Next →" : "Finish"
-                    onClicked: {
-                        if (placeholderViewModel.canGoNext) {
-                            placeholderViewModel.goNext();
-                        } else {
-                            placeholderViewModel.saveCurrentValue();
+                        TextField {
+                            Layout.fillWidth: true
+                            placeholderText: `Enter value for ${modelData}...`
+                            text: placeholderViewModel.getAllValues()[modelData] || ""
+                            onTextChanged: {
+                                let values = placeholderViewModel.getAllValues();
+                                values[modelData] = text;
+                                // Update the view model with the new value for this placeholder
+                                placeholderViewModel.currentIndex = placeholderViewModel.placeholders.indexOf(modelData);
+                                placeholderViewModel.currentValue = text;
+                                placeholderViewModel.saveCurrentValue();
+                            }
                         }
                     }
                 }
