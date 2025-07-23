@@ -8,21 +8,22 @@ Rectangle {
     property alias text: textField.text
     property alias placeholderText: textField.placeholderText
 
-    height: 40
-    color: "white"
-    border.color: textField.activeFocus ? "#2196f3" : "#e0e0e0"
-    border.width: textField.activeFocus ? 2 : 1
-    radius: 20
+    height: 36
+    color: "#f8f9fa"
+    border.color: textField.activeFocus ? "#007acc" : "#dadce0"
+    border.width: 1
+    radius: 6
 
     RowLayout {
         anchors.fill: parent
-        anchors.leftMargin: 15
-        anchors.rightMargin: 15
-        spacing: 10
+        anchors.leftMargin: 12
+        anchors.rightMargin: 12
+        spacing: 8
 
         Label {
             text: "🔍"
-            font.pointSize: 12
+            font.pointSize: 10
+            color: "#5f6368"
         }
 
         TextField {
@@ -39,11 +40,12 @@ Rectangle {
             text: "✕"
             visible: textField.text.length > 0
             flat: true
+            font.pointSize: 10
             onClicked: textField.clear()
             
             background: Rectangle {
-                color: parent.hovered ? "#f0f0f0" : "transparent"
-                radius: 12
+                color: parent.hovered ? "#e8eaed" : "transparent"
+                radius: 4
             }
         }
     }

@@ -9,12 +9,12 @@ Rectangle {
 
     signal clicked()
 
-    height: 32
-    width: label.implicitWidth + 20
-    color: selected ? "#2196f3" : (mouseArea.containsMouse ? "#f0f0f0" : "white")
-    border.color: selected ? "#1976d2" : "#e0e0e0"
-    border.width: 1
-    radius: 16
+    height: 24
+    width: label.implicitWidth + 12
+    color: selected ? "#007acc" : (mouseArea.containsMouse ? "#e8eaed" : "transparent")
+    border.color: "transparent"
+    border.width: 0
+    radius: 4
 
     Behavior on color {
         ColorAnimation {
@@ -33,7 +33,8 @@ Rectangle {
         id: label
         text: root.text
         anchors.centerIn: parent
-        color: root.selected ? "white" : "#333"
-        font.pointSize: 10
+        color: root.selected ? "white" : "#3c4043"
+        font.pointSize: 9
+        font.weight: root.selected ? Font.Medium : Font.Normal
     }
 }

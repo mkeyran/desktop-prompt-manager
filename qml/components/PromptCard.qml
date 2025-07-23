@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import PromptManager 1.0
 
-Rectangle {
+Item {
     id: root
 
     property int promptId: 0
@@ -22,11 +22,23 @@ Rectangle {
     signal fillPlaceholdersClicked
     signal fillPlaceholdersWithContentClicked(string content)
 
-    height: 120
-    color: mouseArea.containsMouse ? "#f5f5f5" : "white"
-    border.color: "#e0e0e0"
-    border.width: 1
-    radius: 8
+    height: 64
+    
+    Rectangle {
+        anchors.fill: parent
+        color: mouseArea.containsMouse ? "#f1f3f4" : "#fafbfc"
+        border.color: "#e8eaed"
+        border.width: 1
+        radius: 4
+        
+        Rectangle {
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: 1
+            color: "#e8eaed"
+            visible: false
+        }
+    }
 
     MouseArea {
         id: mouseArea
@@ -41,71 +53,63 @@ Rectangle {
 
     RowLayout {
         anchors.fill: parent
-        anchors.margins: 15
-        spacing: 15
+        anchors.margins: 12
+        spacing: 12
 
         // Content column
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            spacing: 8
+            spacing: 2
 
             // Title and folder
             RowLayout {
                 Layout.fillWidth: true
+                spacing: 8
 
                 Label {
                     text: root.title || "Untitled"
-                    font.bold: true
-                    font.pointSize: 12
+                    font.pointSize: 11
+                    color: "#202124"
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                 }
 
-                Rectangle {
+                Label {
                     visible: root.folderName.length > 0
-                    color: "#e3f2fd"
-                    border.color: "#2196f3"
-                    border.width: 1
-                    radius: 12
-                    height: 24
-                    width: folderLabel.implicitWidth + 16
-
-                    Label {
-                        id: folderLabel
-                        text: root.folderName
-                        anchors.centerIn: parent
-                        font.pointSize: 9
-                        color: "#1976d2"
+                    text: root.folderName
+                    font.pointSize: 9
+                    color: "#5f6368"
+                    
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: -4
+                        color: "#f1f3f4"
+                        radius: 3
+                        z: -1
                     }
                 }
             }
 
-            // Content preview
+            // Content preview and date
             Label {
                 Layout.fillWidth: true
-                Layout.fillHeight: true
-                text: root.content
-                color: "#666"
-                elide: Text.ElideRight
-                wrapMode: Text.Wrap
-                maximumLineCount: 2
-            }
-
-            // Date
-            Label {
-                text: Qt.formatDateTime(root.updatedAt, "MMM d, yyyy hh:mm")
-                color: "#999"
+                text: root.content + " • " + Qt.formatDateTime(root.updatedAt, "MMM d")
+                color: "#5f6368"
                 font.pointSize: 9
+                elide: Text.ElideRight
+                maximumLineCount: 1
             }
         }
 
         // Action buttons
-        ColumnLayout {
-            spacing: 5
+        RowLayout {
+            spacing: 4
 
             Button {
                 text: "Edit"
+                flat: true
+                font.pointSize: 9
+                visible: mouseArea.containsMouse
                 onClicked: {
                     root.editClicked();
                 }
@@ -113,6 +117,9 @@ Rectangle {
 
             Button {
                 text: "⋯"
+                flat: true
+                font.pointSize: 12
+                visible: mouseArea.containsMouse
                 onClicked: contextMenu.open()
 
                 Menu {

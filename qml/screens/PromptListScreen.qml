@@ -12,15 +12,16 @@ Page {
     signal fillPlaceholdersWithContent(int promptId, string content)
 
     header: ToolBar {
-        height: 50
+        height: 48
         RowLayout {
             anchors.fill: parent
-            anchors.margins: 10
+            anchors.margins: 12
 
             Label {
                 text: "Prompt Manager"
-                font.pointSize: 18
+                font.pointSize: 16
                 font.bold: true
+                color: "#202124"
             }
 
             Item {
@@ -29,6 +30,8 @@ Page {
 
             Button {
                 text: "New Prompt"
+                highlighted: true
+                font.pointSize: 9
                 onClicked: root.createNewPrompt()
             }
         }
@@ -36,8 +39,8 @@ Page {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 20
-        spacing: 15
+        anchors.margins: 16
+        spacing: 12
 
         // Search bar
         SearchBar {
@@ -51,12 +54,12 @@ Page {
         // Folder chips
         ScrollView {
             Layout.fillWidth: true
-            Layout.preferredHeight: 60
+            Layout.preferredHeight: 48
             clip: true
 
             Row {
-                spacing: 10
-                padding: 5
+                spacing: 8
+                padding: 4
 
                 FolderChip {
                     text: "All"
@@ -91,7 +94,7 @@ Page {
             ListView {
                 id: promptsList
                 model: promptListViewModel
-                spacing: 10
+                spacing: 8
 
                 delegate: PromptCard {
                     width: promptsList.width
