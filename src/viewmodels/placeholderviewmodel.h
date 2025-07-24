@@ -48,6 +48,8 @@ public:
     Q_INVOKABLE void saveCurrentValue();
     Q_INVOKABLE QString getPreview() const;
     Q_INVOKABLE QMap<QString, QString> getAllValues() const { return m_values; }
+    Q_INVOKABLE bool hasDefaultValue(const QString &placeholder) const;
+    Q_INVOKABLE QString getDefaultValue(const QString &placeholder) const;
 
 signals:
     void originalContentChanged();

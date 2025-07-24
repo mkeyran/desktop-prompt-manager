@@ -1,6 +1,8 @@
 #include "placeholderviewmodel.h"
 #include "../utils/placeholderutils.h"
 #include <QDebug>
+#include <QRegularExpression>
+#include <QRegularExpressionMatchIterator>
 
 PlaceholderViewModel::PlaceholderViewModel(QObject *parent)
     : QObject(parent), m_currentIndex(-1)
@@ -57,8 +59,33 @@ bool PlaceholderViewModel::isComplete() const
     }
     
     for (const QString &placeholder : m_placeholders) {
-        if (!m_values.contains(placeholder) || m_values[placeholder].isEmpty()) {
-            return false;
+        // Check if user provided a value
+        bool hasUserValue = m_values.contains(placeholder) && !m_values[placeholder].isEmpty();
+        
+        if (!hasUserValue) {
+            // Check if placeholder has a default value by searching in original content
+            QRegularExpression regex("\\{\\{([^}]+)\\}\\}");
+            QRegularExpressionMatchIterator iterator = regex.globalMatch(m_originalContent);
+            bool hasDefault = false;
+            
+            while (iterator.hasNext()) {
+                QRegularExpressionMatch match = iterator.next();
+                QString placeholderContent = match.captured(1).trimmed();
+                QString placeholderName = PlaceholderUtils::extractPlaceholderName(placeholderContent);
+                
+                if (placeholderName == placeholder) {
+                    QString defaultValue = PlaceholderUtils::extractDefaultValue(placeholderContent);
+                    if (!defaultValue.isEmpty()) {
+                        hasDefault = true;
+                        break;
+                    }
+                }
+            }
+            
+            // If no user value and no default, it's incomplete
+            if (!hasDefault) {
+                return false;
+            }
         }
     }
     return true;
@@ -182,4 +209,41 @@ void PlaceholderViewModel::emitNavigationSignals()
 {
     emit canGoNextChanged();
     emit canGoPreviousChanged();
+}
+
+bool PlaceholderViewModel::hasDefaultValue(const QString &placeholder) const
+{
+    QRegularExpression regex("\\{\\{([^}]+)\\}\\}");
+    QRegularExpressionMatchIterator iterator = regex.globalMatch(m_originalContent);
+    
+    while (iterator.hasNext()) {
+        QRegularExpressionMatch match = iterator.next();
+        QString placeholderContent = match.captured(1).trimmed();
+        QString placeholderName = PlaceholderUtils::extractPlaceholderName(placeholderContent);
+        
+        if (placeholderName == placeholder) {
+            QString defaultValue = PlaceholderUtils::extractDefaultValue(placeholderContent);
+            return !defaultValue.isEmpty();
+        }
+    }
+    
+    return false;
+}
+
+QString PlaceholderViewModel::getDefaultValue(const QString &placeholder) const
+{
+    QRegularExpression regex("\\{\\{([^}]+)\\}\\}");
+    QRegularExpressionMatchIterator iterator = regex.globalMatch(m_originalContent);
+    
+    while (iterator.hasNext()) {
+        QRegularExpressionMatch match = iterator.next();
+        QString placeholderContent = match.captured(1).trimmed();
+        QString placeholderName = PlaceholderUtils::extractPlaceholderName(placeholderContent);
+        
+        if (placeholderName == placeholder) {
+            return PlaceholderUtils::extractDefaultValue(placeholderContent);
+        }
+    }
+    
+    return QString();
 }

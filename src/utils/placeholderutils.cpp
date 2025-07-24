@@ -26,10 +26,11 @@ QStringList PlaceholderUtils::extractPlaceholders(const QString &text)
     
     while (iterator.hasNext()) {
         QRegularExpressionMatch match = iterator.next();
-        QString placeholder = trimPlaceholderName(match.captured(1));
-        if (!placeholder.isEmpty() && !seenPlaceholders.contains(placeholder)) {
-            orderedPlaceholders.append(placeholder);
-            seenPlaceholders.insert(placeholder);
+        QString placeholderContent = trimPlaceholderName(match.captured(1));
+        QString placeholderName = extractPlaceholderName(placeholderContent);
+        if (!placeholderName.isEmpty() && !seenPlaceholders.contains(placeholderName)) {
+            orderedPlaceholders.append(placeholderName);
+            seenPlaceholders.insert(placeholderName);
         }
     }
     
@@ -38,7 +39,7 @@ QStringList PlaceholderUtils::extractPlaceholders(const QString &text)
 
 QString PlaceholderUtils::replacePlaceholders(const QString &text, const QMap<QString, QString> &values)
 {
-    if (text.isEmpty() || values.isEmpty()) {
+    if (text.isEmpty()) {
         return text;
     }
     
@@ -52,10 +53,21 @@ QString PlaceholderUtils::replacePlaceholders(const QString &text, const QMap<QS
     }
     
     for (const QRegularExpressionMatch &match : matches) {
-        QString placeholderName = trimPlaceholderName(match.captured(1));
-        if (values.contains(placeholderName)) {
-            result.replace(match.capturedStart(), match.capturedLength(), values[placeholderName]);
+        QString placeholderContent = trimPlaceholderName(match.captured(1));
+        QString placeholderName = extractPlaceholderName(placeholderContent);
+        QString defaultValue = extractDefaultValue(placeholderContent);
+        
+        QString replacement;
+        if (values.contains(placeholderName) && !values[placeholderName].isEmpty()) {
+            replacement = values[placeholderName];
+        } else if (!defaultValue.isEmpty()) {
+            replacement = defaultValue;
+        } else {
+            // Keep original placeholder if no value and no default
+            continue;
         }
+        
+        result.replace(match.capturedStart(), match.capturedLength(), replacement);
     }
     
     return result;
@@ -87,11 +99,15 @@ QString PlaceholderUtils::generatePreview(const QString &text, const QMap<QStrin
     }
     
     for (const QRegularExpressionMatch &match : matches) {
-        QString placeholderName = trimPlaceholderName(match.captured(1));
+        QString placeholderContent = trimPlaceholderName(match.captured(1));
+        QString placeholderName = extractPlaceholderName(placeholderContent);
+        QString defaultValue = extractDefaultValue(placeholderContent);
         QString replacement;
         
         if (values.contains(placeholderName) && !values[placeholderName].isEmpty()) {
             replacement = values[placeholderName];
+        } else if (!defaultValue.isEmpty()) {
+            replacement = defaultValue;
         } else {
             replacement = QString("{{%1}}").arg(placeholderName); // Show unfilled placeholders with original syntax
         }
@@ -121,4 +137,22 @@ QString PlaceholderUtils::cleanPlaceholderName(const QString &name)
 QString PlaceholderUtils::trimPlaceholderName(const QString &name)
 {
     return name.trimmed();
+}
+
+QString PlaceholderUtils::extractPlaceholderName(const QString &placeholderContent)
+{
+    int pipeIndex = placeholderContent.indexOf('|');
+    if (pipeIndex == -1) {
+        return placeholderContent.trimmed();
+    }
+    return placeholderContent.left(pipeIndex).trimmed();
+}
+
+QString PlaceholderUtils::extractDefaultValue(const QString &placeholderContent)
+{
+    int pipeIndex = placeholderContent.indexOf('|');
+    if (pipeIndex == -1) {
+        return QString();
+    }
+    return placeholderContent.mid(pipeIndex + 1).trimmed();
 }

@@ -20,6 +20,10 @@ public:
     Q_INVOKABLE static bool hasPlaceholders(const QString &text);
     Q_INVOKABLE static int placeholderCount(const QString &text);
     
+    // Default value support
+    Q_INVOKABLE static QString extractDefaultValue(const QString &placeholderContent);
+    Q_INVOKABLE static QString extractPlaceholderName(const QString &placeholderContent);
+    
     // Preview functionality
     Q_INVOKABLE static QString generatePreview(const QString &text, const QMap<QString, QString> &values);
     

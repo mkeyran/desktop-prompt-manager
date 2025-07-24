@@ -61,7 +61,7 @@ Page {
         // All placeholder inputs
         ScrollView {
             Layout.fillWidth: true
-            Layout.preferredHeight: Math.min(400, placeholderViewModel.placeholders.length * 40)
+            Layout.preferredHeight: Math.min(500, placeholderViewModel.placeholders.length * 45)
             visible: placeholderViewModel.placeholders.length > 0
             clip: true
 
@@ -71,21 +71,33 @@ Page {
 
                 Repeater {
                     model: placeholderViewModel.placeholders
-                    
+
                     delegate: RowLayout {
                         Layout.fillWidth: true
                         Layout.preferredWidth: parent.width
                         spacing: 10
 
-                        Label {
-                            text: modelData
+                        ColumnLayout {
                             Layout.preferredWidth: 120
                             Layout.minimumWidth: 80
+                            spacing: 2
+
+                            Label {
+                                text: modelData
+                                font.bold: !placeholderViewModel.hasDefaultValue(modelData)
+                            }
+
+                            Label {
+                                text: "(optional)"
+                                font.pointSize: 8
+                                color: "#666"
+                                visible: placeholderViewModel.hasDefaultValue(modelData)
+                            }
                         }
 
                         TextField {
                             Layout.fillWidth: true
-                            placeholderText: `Enter value for ${modelData}...`
+                            placeholderText: placeholderViewModel.hasDefaultValue(modelData) ? `Optional (default: ${placeholderViewModel.getDefaultValue(modelData)})` : `Enter value for ${modelData}...`
                             text: placeholderViewModel.getAllValues()[modelData] || ""
                             onTextChanged: {
                                 let values = placeholderViewModel.getAllValues();

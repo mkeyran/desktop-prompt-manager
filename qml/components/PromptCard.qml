@@ -101,26 +101,37 @@ Item {
             }
         }
 
-        // Action buttons
-        RowLayout {
-            spacing: 4
+        // Action buttons - always visible, compact vertical layout
+        ColumnLayout {
+            spacing: 2
+            Layout.preferredWidth: 24
 
             Button {
-                text: "Edit"
+                text: "✏"
                 flat: true
-                font.pointSize: 9
-                visible: mouseArea.containsMouse
+                font.pointSize: 10
+                Layout.preferredWidth: 24
+                Layout.preferredHeight: 24
                 onClicked: {
                     root.editClicked();
                 }
+                
+                ToolTip.visible: hovered
+                ToolTip.text: "Edit"
+                ToolTip.delay: 500
             }
 
             Button {
                 text: "⋯"
                 flat: true
                 font.pointSize: 12
-                visible: mouseArea.containsMouse
+                Layout.preferredWidth: 24
+                Layout.preferredHeight: 24
                 onClicked: contextMenu.open()
+                
+                ToolTip.visible: hovered
+                ToolTip.text: "More options"
+                ToolTip.delay: 500
 
                 Menu {
                     id: contextMenu
