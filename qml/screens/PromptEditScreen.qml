@@ -22,7 +22,7 @@ Page {
     }
 
     header: ToolBar {
-        height: 50
+        height: 70
         RowLayout {
             anchors.fill: parent
             anchors.margins: 10

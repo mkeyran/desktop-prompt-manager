@@ -12,7 +12,7 @@ Page {
     signal fillPlaceholdersWithContent(int promptId, string content)
 
     header: ToolBar {
-        height: 48
+        height: 70
         RowLayout {
             anchors.fill: parent
             anchors.margins: 12
