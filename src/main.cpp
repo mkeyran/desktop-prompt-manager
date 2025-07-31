@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("placeholderViewModel", placeholderViewModel);
     engine.rootContext()->setContextProperty("clipboardUtils", clipboardUtils);
     
-    const QUrl url(QStringLiteral("qrc:/PromptManager/qml/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/qt/qml/PromptManager/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)

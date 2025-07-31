@@ -147,30 +147,28 @@ cmake .. \
 log "Building project..."
 make -j$(sysctl -n hw.ncpu)
 
-if [ ! -f "PromptManagerDesktop" ]; then
-    error "Build failed - executable not found"
-fi
-
-success "Build completed successfully"
-
-# Create application bundle
+# Check for the Qt-generated .app bundle
 APP_NAME="PromptManagerDesktop.app"
 APP_PATH="$BUILD_DIR/$APP_NAME"
 CONTENTS_DIR="$APP_PATH/Contents"
 MACOS_DIR="$CONTENTS_DIR/MacOS"
 RESOURCES_DIR="$CONTENTS_DIR/Resources"
 
-log "Creating application bundle..."
+if [ ! -d "$APP_PATH" ] || [ ! -f "$MACOS_DIR/PromptManagerDesktop" ]; then
+    error "Build failed - .app bundle not found at $APP_PATH"
+fi
 
-# Create bundle directory structure
-mkdir -p "$MACOS_DIR"
+success "Build completed successfully"
+
+log "Updating application bundle..."
+
+# Ensure Resources directory exists
 mkdir -p "$RESOURCES_DIR"
 
-# Copy executable
-cp "PromptManagerDesktop" "$MACOS_DIR/PromptManagerDesktop"
-chmod +x "$MACOS_DIR/PromptManagerDesktop"
-
-# Create Info.plist
+# Update Info.plist with additional properties (Qt already created one)
+if [ -f "$CONTENTS_DIR/Info.plist" ]; then
+    chmod +w "$CONTENTS_DIR/Info.plist"
+fi
 cat > "$CONTENTS_DIR/Info.plist" << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -230,6 +228,22 @@ fi
 
 # Deploy Qt frameworks
 log "Deploying Qt frameworks..."
+
+# Find macdeployqt if not already set
+if [ -z "$MACDEPLOYQT" ]; then
+    QT_DIR=""
+    if command -v qmake6 &> /dev/null; then
+        QT_DIR=$(qmake6 -query QT_INSTALL_PREFIX)
+    elif command -v qmake &> /dev/null; then
+        QT_DIR=$(qmake -query QT_INSTALL_PREFIX)
+    fi
+    
+    MACDEPLOYQT="$QT_DIR/bin/macdeployqt"
+    if [ ! -f "$MACDEPLOYQT" ]; then
+        error "macdeployqt not found at $MACDEPLOYQT"
+    fi
+fi
+
 QML_DIR="$PROJECT_ROOT/qml"
 if [ -d "$QML_DIR" ]; then
     "$MACDEPLOYQT" "$APP_PATH" -qmldir="$QML_DIR" -verbose=2

@@ -9,6 +9,13 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Sql)
 
 qt_standard_project_setup()
 
+# Set Qt policies to suppress warnings
+if(POLICY CMP0154)
+    cmake_policy(SET CMP0154 NEW)
+endif()
+qt_policy(SET QTP0001 NEW)
+qt_policy(SET QTP0004 NEW)
+
 # Source files
 set(SOURCES
     src/main.cpp
