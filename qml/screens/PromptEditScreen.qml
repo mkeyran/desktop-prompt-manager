@@ -34,7 +34,6 @@ Page {
 
             Label {
                 text: root.isEditing ? "Edit Prompt" : "New Prompt"
-                font.pointSize: 16
                 font.bold: true
                 Layout.fillWidth: true
             }

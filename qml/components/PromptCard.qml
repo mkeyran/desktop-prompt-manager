@@ -60,7 +60,6 @@ Item {
 
                 Label {
                     text: root.title || "Untitled"
-                    font.pointSize: 11
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                 }
@@ -68,7 +67,6 @@ Item {
                 Label {
                     visible: root.folderName.length > 0
                     text: root.folderName
-                    font.pointSize: 9
                                         
                 }
             }
@@ -77,7 +75,6 @@ Item {
             Label {
                 Layout.fillWidth: true
                 text: root.content + " • " + Qt.formatDateTime(root.updatedAt, "MMM d")
-                font.pointSize: 9
                 elide: Text.ElideRight
                 maximumLineCount: 1
             }

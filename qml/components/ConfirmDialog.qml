@@ -24,7 +24,6 @@ Dialog {
             Layout.fillWidth: true
             text: root.message
             wrapMode: Text.Wrap
-            font.pointSize: 12
         }
 
         RowLayout {

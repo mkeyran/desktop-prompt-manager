@@ -19,7 +19,6 @@ Page {
 
             Label {
                 text: "Prompt Manager"
-                font.pointSize: 16
                 font.bold: true
             }
 
@@ -30,7 +29,6 @@ Page {
             Button {
                 text: "New Prompt"
                 highlighted: true
-                font.pointSize: 9
                 onClicked: root.createNewPrompt()
             }
         }
@@ -120,8 +118,6 @@ Page {
                     Label {
                         anchors.centerIn: parent
                         text: promptListViewModel.searchText.length > 0 ? "No prompts found for your search" : "No prompts yet. Create your first prompt!"
-                        color: "#666"
-                        font.pointSize: 16
                     }
                 }
             }

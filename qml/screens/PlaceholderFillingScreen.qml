@@ -41,7 +41,6 @@ Page {
 
             Label {
                 text: "Fill Placeholders"
-                font.pointSize: 16
                 font.bold: true
                 Layout.fillWidth: true
             }
@@ -89,7 +88,6 @@ Page {
 
                             Label {
                                 text: "(optional)"
-                                font.pointSize: 8
                                 color: "#666"
                                 visible: placeholderViewModel.hasDefaultValue(modelData)
                             }
@@ -123,7 +121,6 @@ Page {
                 Label {
                     text: "Preview"
                     font.bold: true
-                    font.pointSize: 14
                 }
 
                 Item {
@@ -186,7 +183,6 @@ Page {
             Label {
                 anchors.centerIn: parent
                 text: "No placeholders found in this content."
-                font.pointSize: 16
                 color: "#666"
             }
         }

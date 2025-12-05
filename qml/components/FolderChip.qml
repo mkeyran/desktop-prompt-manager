@@ -33,8 +33,6 @@ Rectangle {
         id: label
         text: root.text
         anchors.centerIn: parent
-        color: root.selected ? "white" : "#3c4043"
-        font.pointSize: 9
         font.weight: root.selected ? Font.Medium : Font.Normal
     }
 }

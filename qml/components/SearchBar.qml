@@ -18,7 +18,6 @@ Item {
 
         Label {
             text: "🔍"
-            font.pointSize: 10
         }
 
         TextField {
@@ -32,7 +31,6 @@ Item {
             text: "✕"
             visible: textField.text.length > 0
             flat: true
-            font.pointSize: 10
             onClicked: textField.clear()
            
         }
