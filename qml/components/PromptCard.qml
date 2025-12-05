@@ -26,18 +26,10 @@ Item {
     
     Rectangle {
         anchors.fill: parent
-        color: mouseArea.containsMouse ? "#f1f3f4" : "#fafbfc"
-        border.color: "#e8eaed"
         border.width: 1
         radius: 4
-        
-        Rectangle {
-            anchors.bottom: parent.bottom
-            width: parent.width
-            height: 1
-            color: "#e8eaed"
-            visible: false
-        }
+        color: "transparent"
+       
     }
 
     MouseArea {
@@ -69,7 +61,6 @@ Item {
                 Label {
                     text: root.title || "Untitled"
                     font.pointSize: 11
-                    color: "#202124"
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                 }
@@ -78,15 +69,7 @@ Item {
                     visible: root.folderName.length > 0
                     text: root.folderName
                     font.pointSize: 9
-                    color: "#5f6368"
-                    
-                    Rectangle {
-                        anchors.fill: parent
-                        anchors.margins: -4
-                        color: "#f1f3f4"
-                        radius: 3
-                        z: -1
-                    }
+                                        
                 }
             }
 
@@ -94,7 +77,6 @@ Item {
             Label {
                 Layout.fillWidth: true
                 text: root.content + " • " + Qt.formatDateTime(root.updatedAt, "MMM d")
-                color: "#5f6368"
                 font.pointSize: 9
                 elide: Text.ElideRight
                 maximumLineCount: 1
