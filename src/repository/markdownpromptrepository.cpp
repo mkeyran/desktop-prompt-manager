@@ -16,6 +16,18 @@ MarkdownPromptRepository::MarkdownPromptRepository(const QString &rootPath, QObj
     reload();
 }
 
+void MarkdownPromptRepository::setRootPath(const QString &rootPath)
+{
+    if (m_rootPath == rootPath) return;
+
+    m_rootPath = rootPath;
+    QDir dir(m_rootPath);
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+    reload();
+}
+
 MarkdownPromptRepository::~MarkdownPromptRepository()
 {
     qDeleteAll(m_prompts);

@@ -13,6 +13,8 @@ class MarkdownPromptRepository : public PromptRepository
 public:
     explicit MarkdownPromptRepository(const QString &rootPath, QObject *parent = nullptr);
     ~MarkdownPromptRepository() override;
+    
+    void setRootPath(const QString &rootPath);
 
     // Prompt operations
     bool savePrompt(Prompt *prompt) override;

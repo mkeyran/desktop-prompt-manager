@@ -55,6 +55,7 @@ set(HEADERS
     src/utils/placeholderutils.h
     src/utils/searchfilter.h
     src/utils/clipboardutils.h
+    src/utils/settingsmanager.h
 )
 
 # QML files
@@ -68,6 +69,7 @@ set(QML_FILES
     qml/components/FolderChip.qml
     qml/components/CustomButton.qml
     qml/components/ConfirmDialog.qml
+    qml/components/SettingsDialog.qml
 )
 
 qt_add_executable(PromptManagerDesktop ${SOURCES} ${HEADERS})

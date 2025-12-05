@@ -15,6 +15,7 @@
 #include "models/folder.h"
 #include "utils/placeholderutils.h"
 #include "utils/clipboardutils.h"
+#include "utils/settingsmanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -37,13 +38,20 @@ int main(int argc, char *argv[])
     }
     */
 
-    // Hardcoded path for Markdown repository
-    QString promptsPath = QDir::homePath() + "/Obsidian/PromptManager/";
+    // Create settings manager
+    SettingsManager* settingsManager = new SettingsManager();
+
+    // Use path from settings
+    QString promptsPath = settingsManager->promptsPath();
     QDir().mkpath(promptsPath);
 
     // Create repository
     // PromptRepository* repository = new SqlPromptRepository(database);
     PromptRepository* repository = new MarkdownPromptRepository(promptsPath);
+    
+    // Connect settings change to repository
+    QObject::connect(settingsManager, &SettingsManager::promptsPathChanged, 
+                     qobject_cast<MarkdownPromptRepository*>(repository), &MarkdownPromptRepository::setRootPath);
     
     // Create view models and utilities
     PromptListViewModel* promptListViewModel = new PromptListViewModel(repository);
@@ -67,6 +75,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("promptEditViewModel", promptEditViewModel);
     engine.rootContext()->setContextProperty("placeholderViewModel", placeholderViewModel);
     engine.rootContext()->setContextProperty("clipboardUtils", clipboardUtils);
+    engine.rootContext()->setContextProperty("settingsManager", settingsManager);
     
     const QUrl url(QStringLiteral("qrc:/qt/qml/PromptManager/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
 import PromptManager 1.0
+import "components"
 
 ApplicationWindow {
     id: window
@@ -9,6 +10,26 @@ ApplicationWindow {
     height: 800
     visible: true
     title: "Prompt Manager"
+
+    menuBar: MenuBar {
+        Menu {
+            title: "File"
+            MenuItem {
+                text: "Settings"
+                onTriggered: settingsDialog.open()
+            }
+            MenuItem {
+                text: "Exit"
+                onTriggered: Qt.quit()
+            }
+        }
+    }
+    
+    SettingsDialog {
+         id: settingsDialog
+         anchors.centerIn: parent
+         width: 500
+    }
 
     property alias navigation: stackView
 
