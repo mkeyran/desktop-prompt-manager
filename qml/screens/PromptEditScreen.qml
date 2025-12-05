@@ -165,13 +165,6 @@ Page {
                     }
                     wrapMode: TextArea.Wrap
                     selectByMouse: true
-
-                    background: Rectangle {
-                        color: "white"
-                        border.color: contentArea.activeFocus ? "#2196f3" : "#e0e0e0"
-                        border.width: contentArea.activeFocus ? 2 : 1
-                        radius: 4
-                    }
                 }
             }
         }
