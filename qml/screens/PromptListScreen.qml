@@ -21,7 +21,6 @@ Page {
                 text: "Prompt Manager"
                 font.pointSize: 16
                 font.bold: true
-                color: "#202124"
             }
 
             Item {
