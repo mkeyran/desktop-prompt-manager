@@ -25,7 +25,10 @@ set(SOURCES
     src/database/database.cpp
     src/database/promptdao.cpp
     src/database/folderdao.cpp
+    src/database/folderdao.cpp
     src/repository/promptrepository.cpp
+    src/repository/sqlpromptrepository.cpp
+    src/repository/markdownpromptrepository.cpp
     src/viewmodels/promptlistviewmodel.cpp
     src/viewmodels/prompteditviewmodel.cpp
     src/viewmodels/placeholderviewmodel.cpp
@@ -42,7 +45,10 @@ set(HEADERS
     src/database/database.h
     src/database/promptdao.h
     src/database/folderdao.h
+    src/database/folderdao.h
     src/repository/promptrepository.h
+    src/repository/sqlpromptrepository.h
+    src/repository/markdownpromptrepository.h
     src/viewmodels/promptlistviewmodel.h
     src/viewmodels/prompteditviewmodel.h
     src/viewmodels/placeholderviewmodel.h

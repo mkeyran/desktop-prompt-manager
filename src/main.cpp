@@ -7,6 +7,7 @@
 
 #include "database/database.h"
 #include "repository/promptrepository.h"
+#include "repository/markdownpromptrepository.h"
 #include "viewmodels/promptlistviewmodel.h"
 #include "viewmodels/prompteditviewmodel.h"
 #include "viewmodels/placeholderviewmodel.h"
@@ -23,7 +24,8 @@ int main(int argc, char *argv[])
     app.setApplicationVersion("1.0.0");
     app.setOrganizationName("PromptManager");
     
-    // Initialize database
+    // Initialize database (optional/legacy for now, or we can switch)
+    /*
     QString dataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir().mkpath(dataPath);
     QString dbPath = dataPath + "/prompts.db";
@@ -33,9 +35,15 @@ int main(int argc, char *argv[])
         qCritical() << "Failed to initialize database";
         return -1;
     }
-    
+    */
+
+    // Hardcoded path for Markdown repository
+    QString promptsPath = QDir::homePath() + "/Obsidian/PromptManager/";
+    QDir().mkpath(promptsPath);
+
     // Create repository
-    PromptRepository* repository = new PromptRepository(database);
+    // PromptRepository* repository = new SqlPromptRepository(database);
+    PromptRepository* repository = new MarkdownPromptRepository(promptsPath);
     
     // Create view models and utilities
     PromptListViewModel* promptListViewModel = new PromptListViewModel(repository);

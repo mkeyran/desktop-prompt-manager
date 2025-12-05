@@ -7,46 +7,42 @@
 #include "../models/folder.h"
 #include "../models/promptwithfolder.h"
 
-class Database;
-class PromptDao;
-class FolderDao;
-
 class PromptRepository : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit PromptRepository(Database *database, QObject *parent = nullptr);
-    ~PromptRepository();
+    explicit PromptRepository(QObject *parent = nullptr);
+    virtual ~PromptRepository();
 
     // Prompt operations
-    bool savePrompt(Prompt *prompt);
-    bool deletePrompt(int promptId);
-    Prompt* getPromptById(int promptId);
-    QList<Prompt*> getAllPrompts();
-    QList<Prompt*> getPromptsByFolder(int folderId);
-    QList<Prompt*> getPromptsWithoutFolder();
-    bool duplicatePrompt(int promptId);
+    virtual bool savePrompt(Prompt *prompt) = 0;
+    virtual bool deletePrompt(int promptId) = 0;
+    virtual Prompt* getPromptById(int promptId) = 0;
+    virtual QList<Prompt*> getAllPrompts() = 0;
+    virtual QList<Prompt*> getPromptsByFolder(int folderId) = 0;
+    virtual QList<Prompt*> getPromptsWithoutFolder() = 0;
+    virtual bool duplicatePrompt(int promptId) = 0;
     
     // Folder operations
-    bool saveFolder(Folder *folder);
-    bool deleteFolder(int folderId);
-    Folder* getFolderById(int folderId);
-    QList<Folder*> getAllFolders();
-    QList<Folder*> getFoldersWithCounts();
-    bool folderNameExists(const QString &name, int excludeId = -1);
+    virtual bool saveFolder(Folder *folder) = 0;
+    virtual bool deleteFolder(int folderId) = 0;
+    virtual Folder* getFolderById(int folderId) = 0;
+    virtual QList<Folder*> getAllFolders() = 0;
+    virtual QList<Folder*> getFoldersWithCounts() = 0;
+    virtual bool folderNameExists(const QString &name, int excludeId = -1) = 0;
     
     // Search operations
-    QList<Prompt*> searchPrompts(const QString &searchText);
-    QList<Prompt*> searchPromptsInFolder(const QString &searchText, int folderId);
+    virtual QList<Prompt*> searchPrompts(const QString &searchText) = 0;
+    virtual QList<Prompt*> searchPromptsInFolder(const QString &searchText, int folderId) = 0;
     
     // Combined operations
-    QList<PromptWithFolder*> getPromptsWithFolders();
+    virtual QList<PromptWithFolder*> getPromptsWithFolders() = 0;
     
     // Statistics
-    int getPromptCount();
-    int getFolderCount();
-    int getPromptCountByFolder(int folderId);
+    virtual int getPromptCount() = 0;
+    virtual int getFolderCount() = 0;
+    virtual int getPromptCountByFolder(int folderId) = 0;
 
 signals:
     void promptAdded(Prompt *prompt);
@@ -56,11 +52,6 @@ signals:
     void folderUpdated(Folder *folder);
     void folderDeleted(int folderId);
     void dataChanged();
-
-private:
-    Database *m_database;
-    PromptDao *m_promptDao;
-    FolderDao *m_folderDao;
 };
 
 #endif // PROMPTREPOSITORY_H
