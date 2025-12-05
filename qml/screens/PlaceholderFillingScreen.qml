@@ -156,13 +156,6 @@ Page {
                     readOnly: true
                     wrapMode: TextArea.Wrap
                     selectByMouse: true
-
-                    background: Rectangle {
-                        color: placeholderViewModel.isComplete ? "#f0f8ff" : "#f8f8f8"
-                        border.color: placeholderViewModel.isComplete ? "#4CAF50" : "#ddd"
-                        border.width: 1
-                        radius: 4
-                    }
                 }
             }
         }
