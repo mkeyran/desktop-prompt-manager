@@ -5,7 +5,7 @@ project(PromptManagerDesktop VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Sql)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Sql DBus QuickControls2)
 
 qt_standard_project_setup()
 
@@ -85,6 +85,8 @@ target_link_libraries(PromptManagerDesktop PRIVATE
     Qt6::Gui
     Qt6::Quick
     Qt6::Sql
+    Qt6::DBus
+    Qt6::QuickControls2
 )
 
 # Set application properties

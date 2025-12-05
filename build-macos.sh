@@ -237,7 +237,7 @@ if [ -z "$MACDEPLOYQT" ]; then
     elif command -v qmake &> /dev/null; then
         QT_DIR=$(qmake -query QT_INSTALL_PREFIX)
     fi
-    
+
     MACDEPLOYQT="$QT_DIR/bin/macdeployqt"
     if [ ! -f "$MACDEPLOYQT" ]; then
         error "macdeployqt not found at $MACDEPLOYQT"
@@ -246,9 +246,9 @@ fi
 
 QML_DIR="$PROJECT_ROOT/qml"
 if [ -d "$QML_DIR" ]; then
-    "$MACDEPLOYQT" "$APP_PATH" -qmldir="$QML_DIR" -verbose=2
+    "$MACDEPLOYQT" "$APP_PATH" -qmldir="$QML_DIR" -verbose=1
 else
-    "$MACDEPLOYQT" "$APP_PATH" -verbose=2
+    "$MACDEPLOYQT" "$APP_PATH" -verbose=1
 fi
 
 # Sign the bundle if requested
