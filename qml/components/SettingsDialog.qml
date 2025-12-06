@@ -1,7 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import Qt.labs.platform 1.1 as Platform
+import QtQuick.Dialogs
+
 
 Dialog {
     id: root
@@ -43,7 +44,7 @@ Dialog {
         }
     }
 
-    Platform.FolderDialog {
+    FolderDialog {
         id: folderDialog
         title: "Select Prompts Folder"
         currentFolder: "file://" + settingsManager.promptsPath
